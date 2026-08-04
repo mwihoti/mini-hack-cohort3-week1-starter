@@ -1,17 +1,20 @@
 import "dotenv/config";
-import Anthropic from "@anthropic-ai/sdk";
+// import Anthropic from "@anthropic-ai/sdk";
+import Openai from "openai";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+//
+// const anthropic = new Anthropic({
+//   apiKey: process.env.ANTHROPIC_API_KEY,
+// });
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
-const SYSTEM_PROMPT = `You are Mini Hack Assistant, a patient technical mentor for
-Team1 Kenya's Cohort 3 builders. Explain concepts in plain English before
-using jargon. Keep answers under 150 words unless asked for more detail.`;
-
-const MODEL = "claude-sonnet-4-6";
+const client = new Openai();
+//
+// const SYSTEM_PROMPT = `You are Mini Hack Assistant, a patient technical mentor for
+// Team1 Kenya's Cohort 3 builders. Explain concepts in plain English before
+// using jargon. Keep answers under 150 words unless asked for more detail.`;
+//
+const MODEL = "gpt-5.6";
 const MAX_TOKENS = 1024;
 
 async function main() {
@@ -26,17 +29,15 @@ async function main() {
 
     messages.push({ role: "user", content: userInput });
 
-    const response = await anthropic.messages.create({
+    const response = await client.responses.create({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
-      system: SYSTEM_PROMPT,
-      messages, // full history sent every turn — Claude has no memory of its own
+      input: userInput,
     });
 
-    const reply = response.content[0].text;
-    console.log(`\nClaude: ${reply}\n`);
+    const reply = response.output_text;
+    console.log(`\nGPT: ${reply}\n`);
 
-    messages.push({ role: "assistant", content: reply }); // remember Claude's turn too
+    messages.push({ role: "assistant", content: reply });
   }
 
   rl.close();
