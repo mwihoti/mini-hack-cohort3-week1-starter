@@ -43,3 +43,18 @@ can call **two tools**: a web search tool, and the Avalanche MCP server
 Every message you send and receive costs tokens. Check your usage at
 console.anthropic.com/settings/usage before and after a session so you know
 what a typical chat costs, and set a spend limit under Settings → Limits.
+
+## Week 1 agent (this branch)
+
+`chat.js` is now a tool-calling agent: it answers Avalanche questions using
+a **web search tool** (Tavily) and the official **Avalanche MCP server**
+(`docs_search` via https://build.avax.network/api/mcp), with full
+conversation memory across tool calls. It runs on OpenRouter
+(`deepseek/deepseek-v4-flash`) through the Anthropic-compatible endpoint;
+Anthropic and OpenAI keys also work.
+
+To run: `cp .env.example .env`, paste your `OPENROUTER_API_KEY` and
+`TAVILY_API_KEY`, then `npm install && npm start`. Type `exit` to quit.
+Tool calls are shown inline as `➔ Using web_search: ...` while the agent
+works. Errors from a failing tool are returned to the model as text, so a
+broken key or a down API degrades the answer instead of crashing the chat.
