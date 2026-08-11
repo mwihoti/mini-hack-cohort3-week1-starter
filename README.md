@@ -23,6 +23,23 @@ cp .env.example .env
 npm start
 ```
 
+## Prefer Rust?
+
+`rust/chat.rs` is the same starter chatbot in plain Rust. It calls the
+OpenAI chat completions API directly over HTTPS with no SDK, so the whole
+request is visible in one file. It reads the same `.env` at the repo root
+(`OPENAI_API_KEY`), and it resends the full message history on every call,
+which is what gives the bot its memory.
+
+```bash
+# needs a Rust toolchain: https://rustup.rs
+cd rust
+cargo run
+```
+
+Setup details, a chat.js to chat.rs mapping, and where the week 1 tools
+plug in are covered in [`rust/README.md`](rust/README.md).
+
 ## Files
 
 | File | Purpose |
@@ -30,6 +47,7 @@ npm start
 | `chat.js` | The chatbot — client setup, system prompt, conversation loop |
 | `.env.example` | Template for your API key — copy to `.env`, never commit `.env` |
 | `package.json` | Dependencies: `@anthropic-ai/sdk`, `dotenv` |
+| `rust/` | The same chatbot in plain Rust, no SDK. See "Prefer Rust?" above |
 
 ## Next steps (your Week 1 deliverable)
 
